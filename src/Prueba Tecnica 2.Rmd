@@ -1,0 +1,35 @@
+---
+title: "Prueba Tecnica 2"
+author: "Samuel Ruiz Martinez"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, punto 1,echo=FALSE}
+library(dplyr)
+A$fuente<-rep("A",10)
+B$fuente<-rep("B",10)
+todo<-rbind(A,B)
+
+etiquetas<-unique(todo$NUMERO_DOCUMENTO)
+id<-seq(1:15)
+Identificador<-as.data.frame(cbind(etiquetas,id))
+todo<-todo%>%inner_join(Identificador,by=c("NUMERO_DOCUMENTO"="etiquetas"))%>%as.data.frame()
+todo[,12:13]
+```
+
+
+## Tabla de contingencia
+
+```{r,echo=FALSE}
+conteo<-todo%>%select(NUMERO_DOCUMENTO,NOMBRE1)%>%group_by(NUMERO_DOCUMENTO,NOMBRE1)%>%summarise(n=n())%>%as.data.frame()
+tabla<-unclass(table(todo$fuente,todo$NUMERO_DOCUMENTO))
+colnames(tabla)<-conteo$NOMBRE1
+t(tabla)
+```
+
+Podemos observar que 
